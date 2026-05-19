@@ -63,24 +63,36 @@ def render(ticker: str, period: str) -> None:
     DEMO_DATA = {
         "OGDC": {
             "primary_cause": "SBP policy rate cut of 100bps triggered energy sector re-rating as lower discount rates improve NPV of OGDC's proven reserves by approximately 12%.",
-            "chain": ["SBP cuts policy rate 100bps to 17% — monetary easing cycle begins", "Lower discount rate increases NPV of long-duration upstream oil and gas assets", "OGDC reserve base re-rated upward — analyst EPS estimates revised +8%", "Price rallies +1.64% on institutional buying consistent with sector-wide energy move"],
+            "chain": [
+                "SBP cuts policy rate 100bps to 17% — monetary easing cycle begins in Pakistan",
+                "Lower discount rate increases NPV of long-duration upstream oil and gas assets",
+                "OGDC reserve base re-rated upward — analyst EPS estimates revised +8%",
+                "Price rallies +1.64% on institutional buying consistent with sector-wide energy move"
+            ],
             "news": [
-                {"title": "SBP cuts benchmark rate by 100bps to 17% in surprise monetary policy move", "source": "Dawn Business", "sentiment": "BULLISH", "age": "2h ago", "url": "https://dawn.com"},
-                {"title": "Pakistan energy stocks rally as monetary easing boosts upstream valuations", "source": "Reuters", "sentiment": "BULLISH", "age": "3h ago", "url": "https://reuters.com"},
-                {"title": "OGDC Q2 earnings preview: analysts expect 8-12% EPS growth on volume uptick", "source": "Business Recorder", "sentiment": "NEUTRAL", "age": "5h ago", "url": "https://brecorder.com"},
-                {"title": "Circular debt rises to PKR 2.8 trillion — OGRA gas price review imminent", "source": "The News", "sentiment": "BEARISH", "age": "6h ago", "url": "https://thenews.com.pk"},
-                {"title": "Brent crude holds above $85 — positive outlook for Pakistan upstream producers", "source": "Bloomberg", "sentiment": "BULLISH", "age": "8h ago", "url": "https://bloomberg.com"},
+                {"title": "SBP slashes benchmark interest rate by 100bps to 17% in surprise monetary policy decision", "source": "Dawn Business", "sentiment": "BULLISH", "age": "2h ago", "url": "https://www.dawn.com/business"},
+                {"title": "OGDC posts highest quarterly production volumes in three years amid upstream expansion", "source": "Business Recorder", "sentiment": "BULLISH", "age": "4h ago", "url": "https://www.brecorder.com"},
+                {"title": "Pakistan circular debt crosses PKR 2.9 trillion — OGRA gas price notification delayed again", "source": "The News International", "sentiment": "BEARISH", "age": "6h ago", "url": "https://www.thenews.com.pk"},
+                {"title": "Brent crude climbs above $87 on Middle East supply concerns — positive for Pakistan upstream", "source": "Reuters", "sentiment": "BULLISH", "age": "3h ago", "url": "https://www.reuters.com"},
+                {"title": "Oil majors raise exploration budgets as global energy demand outlook strengthens for 2026", "source": "Bloomberg", "sentiment": "BULLISH", "age": "5h ago", "url": "https://www.bloomberg.com"},
+                {"title": "OPEC+ holds output cuts steady through Q3 — Brent price floor seen at $82 per barrel", "source": "Financial Times", "sentiment": "NEUTRAL", "age": "8h ago", "url": "https://www.ft.com"},
             ]
         },
         "HBL": {
-            "primary_cause": "SBP rate cut compresses net interest margin by estimated 80-120bps but triggers valuation re-rating as banking sector P/B multiples expand in easing cycle.",
-            "chain": ["SBP cuts policy rate 100bps — NIM compression risk for all banks", "HBL current account deposits (CASA ratio 78%) provide partial NIM buffer", "Fee income and ADC revenue growth offsets 40% of NIM impact per analyst models", "Stock rallies as market prices in easing cycle re-rating ahead of NIM compression"],
+            "primary_cause": "SBP rate cut compresses net interest margin by estimated 80-120bps but triggers valuation re-rating as banking sector P/B multiples expand during easing cycles historically.",
+            "chain": [
+                "SBP cuts policy rate 100bps — NIM compression risk flagged across banking sector",
+                "HBL CASA ratio of 78% provides partial buffer — low-cost deposits reduce funding cost impact",
+                "Fee income and digital banking revenue up 34% YoY — partially offsets NIM compression",
+                "Stock re-rates upward as market prices in easing cycle before full NIM impact materialises"
+            ],
             "news": [
-                {"title": "HBL reports record quarterly profit of PKR 18.2 billion on fee income surge", "source": "Dawn Business", "sentiment": "BULLISH", "age": "1h ago", "url": "https://dawn.com"},
-                {"title": "SBP rate cut to compress banking NIMs by 80-120bps say analysts", "source": "Business Recorder", "sentiment": "BEARISH", "age": "3h ago", "url": "https://brecorder.com"},
-                {"title": "Pakistan banking sector sees foreign inflows as easing cycle attracts capital", "source": "Reuters", "sentiment": "BULLISH", "age": "4h ago", "url": "https://reuters.com"},
-                {"title": "HBL digital banking users cross 8 million — ADC fee income up 34% YoY", "source": "Tribune", "sentiment": "BULLISH", "age": "5h ago", "url": "https://tribune.com.pk"},
-                {"title": "IMF flags banking sector NPL ratio rising to 8.2% amid economic slowdown", "source": "Financial Times", "sentiment": "BEARISH", "age": "7h ago", "url": "https://ft.com"},
+                {"title": "HBL reports record quarterly profit of PKR 18.2 billion driven by fee income and ADC growth", "source": "Dawn Business", "sentiment": "BULLISH", "age": "1h ago", "url": "https://www.dawn.com/business"},
+                {"title": "Pakistan banking sector NPL ratio rises to 8.4% as economic slowdown pressures loan books", "source": "Business Recorder", "sentiment": "BEARISH", "age": "4h ago", "url": "https://www.brecorder.com"},
+                {"title": "HBL digital wallet users cross 8 million — bank targets 12 million by end of fiscal year", "source": "The News International", "sentiment": "BULLISH", "age": "6h ago", "url": "https://www.thenews.com.pk"},
+                {"title": "Pakistan banking stocks rally as SBP rate cut signals start of monetary easing cycle", "source": "Reuters", "sentiment": "BULLISH", "age": "2h ago", "url": "https://www.reuters.com"},
+                {"title": "Emerging market banks face NIM pressure as rate cut cycles begin across Asia and Middle East", "source": "Bloomberg", "sentiment": "BEARISH", "age": "5h ago", "url": "https://www.bloomberg.com"},
+                {"title": "IMF praises Pakistan banking sector resilience but flags rising NPLs as key risk to monitor", "source": "Financial Times", "sentiment": "NEUTRAL", "age": "7h ago", "url": "https://www.ft.com"},
             ]
         }
     }

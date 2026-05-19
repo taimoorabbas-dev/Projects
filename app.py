@@ -168,7 +168,7 @@ def _render_navbar() -> None:
     )
     pages = ["Home", "Dashboard", "Market Overview", "Portfolio", "Watchlist"]
     current = st.session_state.get("page", "Home")
-    cols = st.columns([1, 1.3, 1.6, 1.1, 1.1, 1, 2.8])
+    cols = st.columns([1, 1.3, 1.6, 1.1, 1.1, 0.5])
     nav_map = zip(pages, cols[:5])
     for page_name, col in nav_map:
         with col:
@@ -176,13 +176,6 @@ def _render_navbar() -> None:
             if st.button(page_name, key=f"nav_{page_name}", type=btn_type, use_container_width=True):
                 st.session_state["page"] = page_name
                 st.rerun()
-    with cols[5]:
-        pass
-    with cols[6]:
-        search = st.text_input("navsearch", placeholder="🔍  Search — OGDC, HBL, MCB...", label_visibility="collapsed", key="nav_search_input")
-        if search and search != st.session_state.get("_last_nav_search", ""):
-            st.session_state["_last_nav_search"] = search
-            _go_to_dashboard(search)
 
 
 # ── Homepage ───────────────────────────────────────────────────────────────────
