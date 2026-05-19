@@ -1,92 +1,37 @@
-"""components/header.py — Fintech-style Streamlit asset header."""
-
+"""components/header.py — Asset header (pure Streamlit)."""
 from __future__ import annotations
-
 import streamlit as st
-
 from services.market_data import AssetSnapshot
-from utils.helpers import (
-    fmt_price,
-    fmt_pct,
-)
 
 
 def render_header(snap: AssetSnapshot) -> None:
+    pct      = snap.pct_change or 0.0
+    is_up    = pct >= 0
+    sign     = "+" if is_up else ""
+    color    = "green" if is_up else "red"
+    pct_str  = f"{sign}{pct:.2f}%"
 
-    pct = snap.pct_change or 0
-
-    arrow = "▲" if pct >= 0 else "▼"
-
-    delta_color = "normal" if pct >= 0 else "inverse"
-
-    # ─────────────────────────────────────────────
-    # Top subtle market context
-    # ─────────────────────────────────────────────
-
-    st.caption(
-        f"{snap.sector.upper()}  •  {snap.ticker}  •  PAKISTAN STOCK EXCHANGE"
-    )
-
-    # ─────────────────────────────────────────────
-    # Main header layout
-    # ─────────────────────────────────────────────
-
-    left_col, right_col = st.columns([3.5, 1.5])
-
-    # ─────────────────────────────────────────────
-    # LEFT SIDE
-    # ─────────────────────────────────────────────
-
-    with left_col:
-
+    col_name, col_price = st.columns([3, 1])
+    with col_name:
+        st.title(snap.ticker)
         st.markdown(
-            f"""
-            ### {snap.full_name}
-            """
+            f"**{snap.full_name}**"
+            f"  ·  {snap.sector}"
+            f"  ·  :{color}[{snap.movement_label}]"
+            f"  ·  :gray[{snap.volatility_tag}]"
         )
-
-        tag_col1, tag_col2 = st.columns(2)
-
-        with tag_col1:
-
-            st.info(
-                f"Volatility: {snap.volatility_tag}"
-            )
-
-        with tag_col2:
-
-            st.info(
-                f"Movement: {snap.movement_label}"
-            )
-
-    # ─────────────────────────────────────────────
-    # RIGHT SIDE
-    # ─────────────────────────────────────────────
-
-    with right_col:
-
+    with col_price:
         st.metric(
-            label="Current Price",
-            value=fmt_price(
-                snap.current_price,
-                snap.currency
-            ),
-            delta=f"{arrow} {fmt_pct(pct)}",
-            delta_color=delta_color
+            "Current Price",
+            f"PKR {snap.current_price:,.2f}" if snap.current_price else "—",
+            pct_str,
+            delta_color="normal",
         )
-
-    # ─────────────────────────────────────────────
-    # Noise Detection Banner
-    # ─────────────────────────────────────────────
 
     if abs(pct) < 0.5:
-
         st.warning(
-            "Current movement appears within normal market noise range."
+            "Movement is within normal market noise range — no significant catalyst detected.",
+            icon="⚠️",
         )
-
-    # ─────────────────────────────────────────────
-    # Divider
-    # ─────────────────────────────────────────────
 
     st.divider()

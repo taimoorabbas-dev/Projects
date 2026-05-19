@@ -7,3 +7,4 @@ openai
 newsapi-python
 python-dotenv
 numpy
+tenacity

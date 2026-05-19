@@ -260,7 +260,7 @@ def _call_gpt(user_prompt: str) -> str:
     settings = get_settings()
     client = OpenAI(api_key=settings.OPENAI_API_KEY)
     response = client.chat.completions.create(
-        model=settings.openai_model,
+        model=settings.OPENAI_MODEL,
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user",   "content": user_prompt},

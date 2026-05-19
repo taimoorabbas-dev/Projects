@@ -1,204 +1,67 @@
-"""components/news_feed.py — Streamlit-native news intelligence feed."""
-
+"""components/news_feed.py — News feed with filters (pure Streamlit)."""
 from __future__ import annotations
-
 import streamlit as st
-
 from services.news_service import Article
 
 
-def render_news_feed(
-    articles: list[Article]
-) -> None:
-
+def render_news_feed(articles: list[Article]) -> None:
     if not articles:
-
         st.info(
-            "No articles loaded. Add NEWS_API_KEY to .env to enable live news."
+            "No articles loaded. Add your `NEWS_API_KEY` to `.env` for real-time news.",
+            icon="📰",
         )
-
         return
 
-    # ─────────────────────────────────────────────
     # Filters
-    # ─────────────────────────────────────────────
-
-    col1, col2, col3 = st.columns([2, 2, 1])
-
-    with col1:
-
+    f1, f2, f3 = st.columns([2, 2, 1])
+    with f1:
         sentiment_filter = st.selectbox(
-            "Sentiment Filter",
-            [
-                "All",
-                "BULLISH",
-                "BEARISH",
-                "NEUTRAL"
-            ]
+            "Sentiment", ["All", "BULLISH", "BEARISH", "NEUTRAL"],
+            key="news_sentiment_filter",
         )
-
-    with col2:
-
+    with f2:
         source_filter = st.selectbox(
-            "Source Filter",
-            [
-                "All Sources",
-                "Credible Only"
-            ]
+            "Source", ["All Sources", "Credible Only"],
+            key="news_source_filter",
         )
+    with f3:
+        show_n = st.selectbox("Show", [10, 20, 30], key="news_count")
 
-    with col3:
+    filtered = [
+        a for a in articles
+        if (sentiment_filter == "All" or a.sentiment == sentiment_filter)
+        and (source_filter == "All Sources" or a.is_credible_source)
+    ]
 
-        show_n = st.selectbox(
-            "Articles",
-            [10, 20, 30]
-        )
+    # Stats
+    s1, s2, s3, s4 = st.columns(4)
+    with s1: st.metric("Showing", len(filtered))
+    with s2: st.metric("Bullish", sum(1 for a in filtered if a.sentiment == "BULLISH"))
+    with s3: st.metric("Bearish", sum(1 for a in filtered if a.sentiment == "BEARISH"))
+    with s4: st.metric("Neutral", sum(1 for a in filtered if a.sentiment == "NEUTRAL"))
 
-    # ─────────────────────────────────────────────
-    # Apply Filters
-    # ─────────────────────────────────────────────
-
-    filtered = []
-
-    for article in articles:
-
-        sentiment_match = (
-            sentiment_filter == "All"
-            or article.sentiment == sentiment_filter
-        )
-
-        source_match = (
-            source_filter == "All Sources"
-            or article.is_credible_source
-        )
-
-        if sentiment_match and source_match:
-
-            filtered.append(article)
-
-    # ─────────────────────────────────────────────
-    # Stats Summary
-    # ─────────────────────────────────────────────
-
-    bull = sum(
-        1 for a in filtered
-        if a.sentiment == "BULLISH"
-    )
-
-    bear = sum(
-        1 for a in filtered
-        if a.sentiment == "BEARISH"
-    )
-
-    neut = sum(
-        1 for a in filtered
-        if a.sentiment == "NEUTRAL"
-    )
-
-    stat1, stat2, stat3, stat4 = st.columns(4)
-
-    stat1.metric(
-        "Filtered",
-        len(filtered)
-    )
-
-    stat2.metric(
-        "Bullish",
-        bull
-    )
-
-    stat3.metric(
-        "Bearish",
-        bear
-    )
-
-    stat4.metric(
-        "Neutral",
-        neut
-    )
+    if not filtered:
+        st.info("No articles match current filters.")
+        return
 
     st.divider()
 
-    # ─────────────────────────────────────────────
-    # Empty State
-    # ─────────────────────────────────────────────
-
-    if not filtered:
-
-        st.warning(
-            "No articles match current filters."
-        )
-
-        return
-
-    # ─────────────────────────────────────────────
-    # Article Feed
-    # ─────────────────────────────────────────────
+    sent_color = {"BULLISH": "green", "BEARISH": "red", "NEUTRAL": "gray"}
 
     for article in filtered[:show_n]:
+        s_c      = sent_color.get(article.sentiment, "gray")
+        verified = "  :blue[✓ VERIFIED]" if article.is_credible_source else ""
 
-        render_article(article)
-
-
-def render_article(
-    article: Article
-) -> None:
-
-    relevance_pct = int(
-        article.relevance_score * 100
-    )
-
-    with st.container(border=True):
-
-        top_left, top_right = st.columns([5, 1])
-
-        with top_left:
-
-            st.markdown(
-                f"#### [{article.title}]({article.url})"
-            )
-
-        with top_right:
-
-            st.metric(
-                "Relevance",
-                f"{relevance_pct}%"
-            )
-
-        meta1, meta2, meta3 = st.columns(3)
-
-        with meta1:
-
-            st.caption(
-                f"Source: {article.source}"
-            )
-
-        with meta2:
-
-            st.caption(
-                f"Sentiment: {article.sentiment}"
-            )
-
-        with meta3:
-
-            st.caption(
-                f"{article.age_label}"
-            )
-
-        if article.is_credible_source:
-
-            st.success(
-                "Credible Source"
-            )
-
-        if article.description:
-
-            st.write(
-                article.short_description
-            )
-
-        st.progress(
-            article.relevance_score
-        )
-
-        st.divider()
+        with st.container(border=True):
+            top, rel = st.columns([5, 1])
+            with top:
+                st.markdown(
+                    f":{s_c}[**{article.sentiment}**]{verified}"
+                    f"  ·  :gray[{article.source}]"
+                    f"  ·  :gray[{article.age_label}]"
+                )
+            with rel:
+                st.progress(float(article.relevance_score),
+                            text=f"{article.relevance_score:.0%}")
+            st.markdown(f"**[{article.title}]({article.url})**")
+            st.caption(article.short_description)
