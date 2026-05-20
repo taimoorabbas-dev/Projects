@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(python -c \"from services.ai_engine import run_analysis; from config.settings import get_settings; s=get_settings\\(\\); print\\('OPENAI_MODEL:', s.OPENAI_MODEL\\); print\\('OPENAI_API_KEY set:', bool\\(s.OPENAI_API_KEY\\)\\)\")",
-      "PowerShell(Rename-Item -Path \"d:\\\\users\\\\Desktop\\\\python-projects\\\\psx-intelligence\\\\pages\" -NewName \"views\")"
-    ]
-  }
-}
